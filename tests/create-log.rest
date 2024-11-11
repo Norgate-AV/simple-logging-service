@@ -1,0 +1,8 @@
+POST http://localhost:3000/api/v1/log
+Content-Type: application/json
+
+{
+    "room": "1017",
+    "level": "error",
+    "message": "Something went wrong"
+}
