@@ -1,0 +1,29 @@
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends:
+      - db
+      - cache
+
+  db:
+    container_name: db
+    image: "postgres:alpine"
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  
+  cache:
+    container_name: cache
+    image: "valkey:alpine"
+    restart: unless-stopped
+    volumes:
+      - ./cache:/var/cache/valkey
+    depends:
+      - db
