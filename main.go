@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Norgate-AV/simple-logging-service/db"
 	"github.com/Norgate-AV/simple-logging-service/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -15,8 +16,7 @@ const (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
+	if err := godotenv.Load(); err != nil {
 		log.Printf("Error loading .env file: %v\n", err)
 		os.Exit(1)
 	}
@@ -24,6 +24,11 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = DefaultPort
+	}
+
+	if err := db.Initialize(); err != nil {
+		log.Printf("Error initializing database: %v\n", err)
+		os.Exit(1)
 	}
 
 	server := gin.Default()
