@@ -17,8 +17,7 @@ const (
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Printf("Error loading .env file: %v\n", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	port := os.Getenv("PORT")
@@ -27,15 +26,13 @@ func main() {
 	}
 
 	if err := db.Initialize(); err != nil {
-		log.Printf("Error initializing database: %v\n", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	server := gin.Default()
 	routes.Register(server)
 
 	if err := server.Run(":" + port); err != nil {
-		log.Printf("Error starting server: %v\n", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 }
