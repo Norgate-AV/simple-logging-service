@@ -1,2 +1,1 @@
 # simple-logging-service
-
