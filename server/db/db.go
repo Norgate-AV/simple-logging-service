@@ -3,8 +3,9 @@ package db
 import (
 	"database/sql"
 	"log"
+	"os"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
@@ -13,7 +14,7 @@ func GetDatabase() (*sql.DB, error) {
 	var err error
 
 	if db == nil {
-		db, err = sql.Open("sqlite3", "app.db")
+		db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	}
 
 	return db, err
@@ -40,7 +41,7 @@ func Initialize() error {
 func createTables(db *sql.DB) error {
 	statement := `
 	CREATE TABLE IF NOT EXISTS logs (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		id SERIAL PRIMARY KEY,
 		room TEXT NOT NULL,
 		level TEXT NOT NULL,
 		message TEXT NOT NULL,
